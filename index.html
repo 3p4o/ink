@@ -1,189 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-adsense-account" content="ca-pub-5260615020571352">
-    <title>BALENCIAGA.INK</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="google-adsense-account" content="ca-pub-5260615020571352">
+  <meta name="theme-color" content="#000000">
+  <title>BALENCIAGA.INK</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif;background:#000}
 
-        html, body {
-            height: 100%;
-            overflow: hidden;
-            font-family: Arial, sans-serif;
-            background: #000;
-        }
+    #enterScreen{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;justify-content:center;align-items:center;z-index:1000;transition:opacity .5s ease-out}
+    #enterScreen.hidden{opacity:0;pointer-events:none}
+    #enterText{color:#666;font-size:2rem;user-select:none;letter-spacing:.15em;text-transform:uppercase;transition:.2s ease}
+    #enterText:hover{transform:scale(1.05);color:#aaa}
 
-        #enterScreen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0,0,0,0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            z-index: 1000;
-            transition: opacity 0.5s ease-out;
-        }
+    #flash{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:1500}
+    #flash.show{animation:flash .35s ease-out}
+    @keyframes flash{0%{opacity:0}20%{opacity:1}100%{opacity:0}}
 
-        #enterScreen.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
+    video{position:fixed;inset:0;width:100vw;height:100vh;object-fit:cover;z-index:-2}
 
-        #enterText {
-            color: #555;
-            font-size: 2rem;
-            text-align: center;
-            user-select: none;
-            transition: transform 0.2s ease, color 0.2s ease;
-        }
+    #fx{position:fixed;inset:0;z-index:-1}
 
-        #enterText:hover {
-            transform: scale(1.05);
-            color: #888;
-        }
+    #overlay{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:100;opacity:0;transition:opacity 1s ease-in}
+    #overlay.visible{opacity:1}
+    #profileContainer{background:rgba(0,0,0,.7);border-radius:26px;padding:40px 50px;border:2px solid #000;backdrop-filter:blur(2px)}
 
-        video {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
-            z-index: -1;
-        }
+    #profilePic{width:150px;height:150px;border-radius:50%;display:block;margin:0 auto 18px auto;box-shadow:0 0 20px rgba(255,255,255,.18);animation:pulse 3s infinite}
+    @keyframes pulse{0%,100%{box-shadow:0 0 20px rgba(255,255,255,.18)}50%{box-shadow:0 0 44px rgba(255,255,255,.5)}}
 
-        #overlay {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            z-index: 100;
-            opacity: 0;
-            transition: opacity 1s ease-in;
-        }
+    .glitch{position:relative;display:inline-block;font-size:3rem;font-weight:800;color:#cfcfcf;letter-spacing:.08em;text-transform:uppercase;filter:drop-shadow(0 0 4px rgba(255,255,255,.05))}
+    .glitch:before,.glitch:after{
+      content:attr(data-text);
+      position:absolute;left:0;top:0;
+      clip-path:inset(0 0 0 0);
+      opacity:.7
+    }
+    .glitch:before{transform:translate(1px,0);color:#00e5ff;mix-blend-mode:screen}
+    .glitch:after{transform:translate(-1px,0);color:#ff2a6d;mix-blend-mode:screen}
+    .glitch.jitter{animation:jitter .13s steps(2,end) 1}
+    @keyframes jitter{
+      0%{transform:translate(0,0) skew(0deg)}
+      50%{transform:translate(1px,-1px) skew(-1deg)}
+      100%{transform:translate(0,0) skew(0deg)}
+    }
 
-        #overlay.visible {
-            opacity: 1;
-        }
+    #discord{
+      font-size:1.2rem;color:#8a8a8a;overflow:hidden;border-right:.14em solid #666;
+      white-space:nowrap;margin:0 auto;letter-spacing:.12em;width:0;
+      animation:typing 2.6s steps(24,end) .3s forwards, blink .75s step-end infinite
+    }
+    @keyframes typing{from{width:0}to{width:100%}}
+    @keyframes blink{from,to{border-color:transparent}50%{border-color:#666}}
 
-        #profileContainer {
-            background: rgba(0,0,0,0.7);
-            border-radius: 25px;
-            padding: 40px 50px;
-            border: 2px solid #000;
-        }
+    #username,#discord{transition:color .3s ease,text-shadow .3s ease}
+    #username:hover,#discord:hover{color:#fff;text-shadow:0 0 16px #fff}
 
-        #profilePicContainer {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 20px;
-        }
+    #hint{font-size:.8rem;color:#6f6f6f;margin-top:10px;opacity:.7}
 
-        #profilePic {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            display: block;
-        }
+    #secret{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:1200}
+    #secret .card{background:#0b0b0b;border:1px solid #1a1a1a;border-radius:18px;padding:26px 28px;max-width:92vw}
+    #secret .card h3{color:#e5e5e5;margin-bottom:8px;letter-spacing:.06em}
+    #secret .card p{color:#9a9a9a;margin-bottom:14px}
+    #secret .card a{color:#fff;text-decoration:none;border-bottom:1px dotted #fff}
 
-        #username {
-            font-size: 3rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #555;
-        }
-
-        #discord {
-            font-size: 1.2rem;
-            color: #666;
-        }
-
-        @media (max-width: 768px) {
-            #enterText {
-                font-size: 1.5rem;
-            }
-
-            #profileContainer {
-                padding: 30px 35px;
-                border-radius: 20px;
-            }
-
-            #profilePic {
-                width: 120px;
-                height: 120px;
-            }
-
-            #username {
-                font-size: 2rem;
-            }
-
-            #discord {
-                font-size: 1rem;
-            }
-        }
-    </style>
+    @media (max-width:768px){
+      #enterText{font-size:1.5rem}
+      #profileContainer{padding:28px 32px;border-radius:20px}
+      #profilePic{width:120px;height:120px}
+      .glitch{font-size:2rem}
+      #discord{font-size:1rem}
+    }
+  </style>
 </head>
 <body>
-    <div id="enterScreen">
-        <div id="enterText">click to enter...</div>
+  <div id="enterScreen"><div id="enterText">click to enter...</div></div>
+  <div id="flash"></div>
+
+  <video loop playsinline>
+    <source src="vid.mp4" type="video/mp4"/>
+    your browser does not support the video tag.
+  </video>
+  <canvas id="fx"></canvas>
+
+  <div id="overlay">
+    <div id="profileContainer">
+      <img id="profilePic" src="100.png" alt="">
+      <div id="username" class="glitch" data-text="BALENCIAGA.INK">BALENCIAGA.INK</div>
+      <div id="discord">discord: wirefrauud</div>
+      <div id="hint">triple-click the pfp</div>
     </div>
+  </div>
 
-    <video loop playsinline>
-        <source src="vid.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
-
-    <div id="overlay">
-        <div id="profileContainer">
-            <div id="profilePicContainer">
-                <img id="profilePic" src="100.png" alt="">
-            </div>
-            <div id="username">BALENCIAGA.INK</div>
-            <div id="discord">discord: wirefrauud</div>
-        </div>
+  <div id="secret">
+    <div class="card">
+      <h3>private</h3>
+      <p>you found it. tap out to close.</p>
+      <p><a href="#" id="secretLink">open the archive</a></p>
     </div>
+  </div>
 
-    <script>
-        const enterScreen = document.getElementById('enterScreen');
-        const video = document.querySelector('video');
+  <script>
+    const enterScreen = document.getElementById('enterScreen');
+    const video = document.querySelector('video');
+    const overlay = document.getElementById('overlay');
+    const flash = document.getElementById('flash');
+    const canvas = document.getElementById('fx');
+    const ctx = canvas.getContext('2d');
+    const username = document.getElementById('username');
+    const pfp = document.getElementById('profilePic');
+    const secret = document.getElementById('secret');
+    const secretLink = document.getElementById('secretLink');
 
-        function startExperience() {
-            enterScreen.classList.add('hidden');
+    function sizeCanvas(){
+      canvas.width = innerWidth;
+      canvas.height = innerHeight;
+    }
+    sizeCanvas();
+    addEventListener('resize', sizeCanvas);
 
-            video.muted = false;
-            video.play().catch(e => {
-                console.log('Video play failed:', e);
-                video.muted = true;
-                video.play();
-            });
+    const PCOUNT = 60;
+    const parts = [];
+    function rand(a,b){return Math.random()*(b-a)+a}
+    for(let i=0;i<PCOUNT;i++){
+      parts.push({
+        x: rand(0, innerWidth),
+        y: rand(0, innerHeight),
+        r: rand(1.2, 3.2),
+        spx: rand(-0.3, 0.3),
+        spy: rand(-0.25, 0.25),
+        a: rand(0.2, 0.6)
+      });
+    }
+    function stepParticles(){
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      for(const p of parts){
+        p.x += p.spx; p.y += p.spy;
+        if(p.x < -20) p.x = canvas.width+20;
+        if(p.x > canvas.width+20) p.x = -20;
+        if(p.y < -20) p.y = canvas.height+20;
+        if(p.y > canvas.height+20) p.y = -20;
 
-            setTimeout(() => {
-                enterScreen.style.display = 'none';
-            }, 500);
+        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r*6);
+        g.addColorStop(0, `rgba(255,255,255,${p.a})`);
+        g.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r*6, 0, Math.PI*2);
+        ctx.fill();
+      }
+      requestAnimationFrame(stepParticles);
+    }
+    requestAnimationFrame(stepParticles);
 
-            setTimeout(() => {
-                document.getElementById('overlay').classList.add('visible');
-            }, 1000);
-        }
+    let parX = 0, parY = 0, targX = 0, targY = 0;
+    function lerp(a,b,t){return a+(b-a)*t}
+    addEventListener('mousemove', (e)=>{
+      const nx = (e.clientX/innerWidth - .5);
+      const ny = (e.clientY/innerHeight - .5);
+      targX = nx * 14;
+      targY = ny * 14;
+    });
+    function parallaxTick(){
+      parX = lerp(parX, targX, .06);
+      parY = lerp(parY, targY, .06);
+      overlay.style.transform = `translate(calc(-50% + ${parX}px), calc(-50% + ${parY}px))`;
+      requestAnimationFrame(parallaxTick);
+    }
+    requestAnimationFrame(parallaxTick);
 
-        enterScreen.addEventListener('click', startExperience);
-        enterScreen.addEventListener('touchstart', startExperience);
-        document.addEventListener('keydown', function(e) {
-            if (e.code === 'Space' || e.code === 'Enter') {
-                startExperience();
-            }
-        });
-    </script>
+    function startExperience(){
+      enterScreen.classList.add('hidden');
+      flash.classList.add('show');
+
+      video.muted = false;
+      video.play().catch(e=>{
+        console.log('video play failed:', e);
+        video.muted = true;
+        video.play();
+      });
+
+      setTimeout(()=>{ enterScreen.style.display='none' }, 500);
+      setTimeout(()=>{ overlay.classList.add('visible') }, 900);
+      setTimeout(()=>{ flash.classList.remove('show') }, 400);
+    }
+    enterScreen.addEventListener('click', startExperience);
+    enterScreen.addEventListener('touchstart', startExperience, {passive:true});
+    document.addEventListener('keydown', (e)=>{
+      if(e.code==='Space' || e.code==='Enter') startExperience();
+    });
+
+    function pingGlitch(){
+      username.classList.add('jitter');
+      username.style.setProperty('--gx', (Math.random()<.5?1:-1)+'px');
+      setTimeout(()=>username.classList.remove('jitter'), 140);
+      const next = Math.random()*4000+2500;
+      setTimeout(pingGlitch, next);
+    }
+    setTimeout(pingGlitch, 1800);
+
+    let clickCount = 0, clickTimer = null;
+    pfp.addEventListener('click', ()=>{
+      clickCount++;
+      if(clickTimer) clearTimeout(clickTimer);
+      clickTimer = setTimeout(()=>{ clickCount = 0 }, 420);
+      if(clickCount>=3){
+        clickCount=0;
+        secret.style.display='flex';
+      }
+    });
+    secret.addEventListener('click', (e)=>{
+      if(e.target===secret) secret.style.display='none';
+    });
+    secretLink.addEventListener('click', (e)=>{
+      e.preventDefault();
+      window.location.href = 'https://balenciaga.rest';
+    });
+
+    document.addEventListener('mousedown', e=> e.preventDefault());
+  </script>
 </body>
 </html>
