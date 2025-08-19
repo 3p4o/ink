@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BALENCIAGA.INK</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: black;
+      color: white;
+      font-family: "Courier New", monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+    }
+    #phrase {
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+    .dot {
+      position: absolute;
+      bottom: 30px;
+      right: 40px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: white;
+      cursor: pointer;
+      opacity: 0.3;
+    }
+    .dot:hover {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div id="phrase">silence is luxury</div>
+  <a href="https://balenciaga.rest" class="dot" title="..."></a>
+
+  <script>
+    const phrases = [
+      "silence is luxury",
+      "archive closed",
+      "truth hides in shadows",
+      "the cult accepts few",
+      "luxury is decay"
+    ];
+    let index = 0;
+    const el = document.getElementById("phrase");
+
+    function showPhrase() {
+      el.style.opacity = 0;
+      setTimeout(() => {
+        el.textContent = phrases[index];
+        el.style.opacity = 1;
+      }, 1000);
+      index = (index + 1) % phrases.length;
+    }
+    showPhrase();
+    setInterval(showPhrase, 4000);
+  </script>
+</body>
+</html>
