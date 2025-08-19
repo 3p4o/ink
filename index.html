@@ -1,68 +1,262 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>BALENCIAGA.INK</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      background: black;
-      color: white;
-      font-family: "Courier New", monospace;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      overflow: hidden;
-    }
-    #phrase {
-      font-size: 1.8rem;
-      letter-spacing: 2px;
-      opacity: 0;
-      transition: opacity 1.5s ease;
-    }
-    .dot {
-      position: absolute;
-      bottom: 30px;
-      right: 40px;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: white;
-      cursor: pointer;
-      opacity: 0.3;
-    }
-    .dot:hover {
-      opacity: 1;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-adsense-account" content="ca-pub-5260615020571352">
+    <title>cjbj</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        #enterScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            z-index: 1000;
+            transition: opacity 0.5s ease-out;
+        }
+
+        #enterScreen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #enterText {
+            color: white;
+            font-size: 2rem;
+            text-align: center;
+            user-select: none;
+            transition: transform 0.2s ease;
+        }
+
+        #enterText:hover {
+            transform: scale(1.05);
+        }
+
+        video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        #overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 100;
+            color: white;
+            font-family: Arial, sans-serif;
+            opacity: 0;
+            transition: opacity 1s ease-in;
+        }
+
+        #overlay.visible {
+            opacity: 1;
+        }
+
+        #profileContainer {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 25px;
+            padding: 40px 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 0 30px rgba(255, 255, 255, 0.2),
+                0 0 60px rgba(255, 255, 255, 0.1),
+                inset 0 0 20px rgba(255, 255, 255, 0.05);
+            animation: containerGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes containerGlow {
+            from {
+                box-shadow: 
+                    0 0 30px rgba(255, 255, 255, 0.2),
+                    0 0 60px rgba(255, 255, 255, 0.1),
+                    inset 0 0 20px rgba(255, 255, 255, 0.05);
+            }
+            to {
+                box-shadow: 
+                    0 0 50px rgba(255, 255, 255, 0.4),
+                    0 0 100px rgba(255, 255, 255, 0.2),
+                    inset 0 0 30px rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        #profilePicContainer {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        #profilePic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            position: relative;
+            z-index: 2;
+            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
+            animation: profileGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes profileGlow {
+            from {
+                filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
+            }
+            to {
+                filter: drop-shadow(0 0 40px rgba(255, 255, 255, 1));
+            }
+        }
+
+        /* Additional glow layer behind the profile pic */
+        #profilePicContainer::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 40%, transparent 70%);
+            z-index: 1;
+            animation: backgroundGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes backgroundGlow {
+            from {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.8;
+            }
+            to {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 1;
+            }
+        }
+
+        #username {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-shadow: 
+                2px 2px 4px rgba(0, 0, 0, 0.8),
+                0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        #discord {
+            font-size: 1.2rem;
+            color: #7289da;
+            text-shadow: 
+                1px 1px 2px rgba(0, 0, 0, 0.8),
+                0 0 5px rgba(114, 137, 218, 0.8);
+        }
+
+        @media (max-width: 768px) {
+            #enterText {
+                font-size: 1.5rem;
+            }
+            
+            #profileContainer {
+                padding: 30px 35px;
+                border-radius: 20px;
+            }
+            
+            #profilePic,
+            #profilePicContainer::before {
+                width: 120px;
+                height: 120px;
+            }
+            
+            #username {
+                font-size: 2rem;
+            }
+            
+            #discord {
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div id="phrase">silence is luxury</div>
-  <a href="https://balenciaga.rest" class="dot" title="..."></a>
+    <div id="enterScreen">
+        <div id="enterText">click to enter...</div>
+    </div>
 
-  <script>
-    const phrases = [
-      "silence is luxury",
-      "archive closed",
-      "truth hides in shadows",
-      "the cult accepts few",
-      "luxury is decay"
-    ];
-    let index = 0;
-    const el = document.getElementById("phrase");
+    <div id="overlay">
+        <div id="profileContainer">
+            <div id="profilePicContainer">
+                <img id="profilePic" src="100.png" alt="Profile Picture">
+            </div>
+            <div id="username">cjbj</div>
+            <div id="discord"></div>
+        </div>
+    </div>
 
-    function showPhrase() {
-      el.style.opacity = 0;
-      setTimeout(() => {
-        el.textContent = phrases[index];
-        el.style.opacity = 1;
-      }, 1000);
-      index = (index + 1) % phrases.length;
-    }
-    showPhrase();
-    setInterval(showPhrase, 4000);
-  </script>
+    <video loop playsinline>
+        <source src="vid.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <script>
+        const enterScreen = document.getElementById('enterScreen');
+        const video = document.querySelector('video');
+
+        function startExperience() {
+            // Hide the enter screen
+            enterScreen.classList.add('hidden');
+            
+            // Start the video with sound
+            video.muted = false;
+            video.play().catch(e => {
+                console.log('Video play failed:', e);
+                // Fallback: try muted if unmuted fails
+                video.muted = true;
+                video.play();
+            });
+
+            // Remove the enter screen completely after transition
+            setTimeout(() => {
+                enterScreen.style.display = 'none';
+            }, 500);
+
+            // Show the overlay after a brief delay
+            setTimeout(() => {
+                document.getElementById('overlay').classList.add('visible');
+            }, 1000);
+        }
+
+        // Add click listener to enter screen
+        enterScreen.addEventListener('click', startExperience);
+        
+        // Also support touch and keyboard
+        enterScreen.addEventListener('touchstart', startExperience);
+        document.addEventListener('keydown', function(e) {
+            if (e.code === 'Space' || e.code === 'Enter') {
+                startExperience();
+            }
+        });
+    </script>
 </body>
 </html>
