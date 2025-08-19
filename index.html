@@ -17,7 +17,6 @@
             overflow: hidden;
             font-family: Arial, sans-serif;
             background: #000;
-            color: #fff;
         }
 
         #enterScreen {
@@ -26,7 +25,7 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: #000;
+            background: rgba(0,0,0,0.5);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -41,7 +40,7 @@
         }
 
         #enterText {
-            color: #ccc;
+            color: #555;
             font-size: 2rem;
             text-align: center;
             user-select: none;
@@ -50,7 +49,7 @@
 
         #enterText:hover {
             transform: scale(1.05);
-            color: #fff;
+            color: #888;
         }
 
         video {
@@ -83,7 +82,7 @@
             background: rgba(0,0,0,0.7);
             border-radius: 25px;
             padding: 40px 50px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 2px solid #000;
         }
 
         #profilePicContainer {
@@ -103,11 +102,12 @@
             font-size: 3rem;
             font-weight: bold;
             margin-bottom: 10px;
+            color: #555;
         }
 
         #discord {
             font-size: 1.2rem;
-            color: #7289da;
+            color: #666;
         }
 
         @media (max-width: 768px) {
