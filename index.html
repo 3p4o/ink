@@ -16,6 +16,8 @@
             height: 100%;
             overflow: hidden;
             font-family: Arial, sans-serif;
+            background: #000;
+            color: #fff;
         }
 
         #enterScreen {
@@ -39,15 +41,16 @@
         }
 
         #enterText {
-            color: white;
+            color: #ccc;
             font-size: 2rem;
             text-align: center;
             user-select: none;
-            transition: transform 0.2s ease;
+            transition: transform 0.2s ease, color 0.2s ease;
         }
 
         #enterText:hover {
             transform: scale(1.05);
+            color: #fff;
         }
 
         video {
@@ -58,6 +61,7 @@
             height: 100vh;
             object-fit: cover;
             z-index: -1;
+            filter: brightness(0.3) contrast(1.2);
         }
 
         #overlay {
@@ -67,8 +71,6 @@
             transform: translate(-50%, -50%);
             text-align: center;
             z-index: 100;
-            color: white;
-            font-family: Arial, sans-serif;
             opacity: 0;
             transition: opacity 1s ease-in;
         }
@@ -78,31 +80,10 @@
         }
 
         #profileContainer {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
+            background: rgba(0,0,0,0.7);
             border-radius: 25px;
             padding: 40px 50px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 
-                0 0 30px rgba(255, 255, 255, 0.2),
-                0 0 60px rgba(255, 255, 255, 0.1),
-                inset 0 0 20px rgba(255, 255, 255, 0.05);
-            animation: containerGlow 3s ease-in-out infinite alternate;
-        }
-
-        @keyframes containerGlow {
-            from {
-                box-shadow: 
-                    0 0 30px rgba(255, 255, 255, 0.2),
-                    0 0 60px rgba(255, 255, 255, 0.1),
-                    inset 0 0 20px rgba(255, 255, 255, 0.05);
-            }
-            to {
-                box-shadow: 
-                    0 0 50px rgba(255, 255, 255, 0.4),
-                    0 0 100px rgba(255, 255, 255, 0.2),
-                    inset 0 0 30px rgba(255, 255, 255, 0.1);
-            }
         }
 
         #profilePicContainer {
@@ -115,84 +96,39 @@
             width: 150px;
             height: 150px;
             border-radius: 50%;
-            position: relative;
-            z-index: 2;
-            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
-            animation: profileGlow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes profileGlow {
-            from {
-                filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
-            }
-            to {
-                filter: drop-shadow(0 0 40px rgba(255, 255, 255, 1));
-            }
-        }
-
-        /* Additional glow layer behind the profile pic */
-        #profilePicContainer::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.1) 40%, transparent 70%);
-            z-index: 1;
-            animation: backgroundGlow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes backgroundGlow {
-            from {
-                transform: translate(-50%, -50%) scale(1);
-                opacity: 0.8;
-            }
-            to {
-                transform: translate(-50%, -50%) scale(1.2);
-                opacity: 1;
-            }
+            display: block;
         }
 
         #username {
             font-size: 3rem;
             font-weight: bold;
             margin-bottom: 10px;
-            text-shadow: 
-                2px 2px 4px rgba(0, 0, 0, 0.8),
-                0 0 10px rgba(255, 255, 255, 0.5);
         }
 
         #discord {
             font-size: 1.2rem;
             color: #7289da;
-            text-shadow: 
-                1px 1px 2px rgba(0, 0, 0, 0.8),
-                0 0 5px rgba(114, 137, 218, 0.8);
         }
 
         @media (max-width: 768px) {
             #enterText {
                 font-size: 1.5rem;
             }
-            
+
             #profileContainer {
                 padding: 30px 35px;
                 border-radius: 20px;
             }
-            
-            #profilePic,
-            #profilePicContainer::before {
+
+            #profilePic {
                 width: 120px;
                 height: 120px;
             }
-            
+
             #username {
                 font-size: 2rem;
             }
-            
+
             #discord {
                 font-size: 1rem;
             }
@@ -209,7 +145,7 @@
             <div id="profilePicContainer">
                 <img id="profilePic" src="100.png" alt="Profile Picture">
             </div>
-            <div id="username">BALENCIAGA.INK/div>
+            <div id="username">BALENCIAGA.INK</div>
             <div id="discord"></div>
         </div>
     </div>
@@ -224,33 +160,25 @@
         const video = document.querySelector('video');
 
         function startExperience() {
-            // Hide the enter screen
             enterScreen.classList.add('hidden');
-            
-            // Start the video with sound
+
             video.muted = false;
             video.play().catch(e => {
                 console.log('Video play failed:', e);
-                // Fallback: try muted if unmuted fails
                 video.muted = true;
                 video.play();
             });
 
-            // Remove the enter screen completely after transition
             setTimeout(() => {
                 enterScreen.style.display = 'none';
             }, 500);
 
-            // Show the overlay after a brief delay
             setTimeout(() => {
                 document.getElementById('overlay').classList.add('visible');
             }, 1000);
         }
 
-        // Add click listener to enter screen
         enterScreen.addEventListener('click', startExperience);
-        
-        // Also support touch and keyboard
         enterScreen.addEventListener('touchstart', startExperience);
         document.addEventListener('keydown', function(e) {
             if (e.code === 'Space' || e.code === 'Enter') {
