@@ -60,7 +60,6 @@
             height: 100vh;
             object-fit: cover;
             z-index: -1;
-            filter: brightness(0.3) contrast(1.2);
         }
 
         #overlay {
@@ -140,6 +139,11 @@
         <div id="enterText">click to enter...</div>
     </div>
 
+    <video loop playsinline>
+        <source src="vid.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
     <div id="overlay">
         <div id="profileContainer">
             <div id="profilePicContainer">
@@ -149,11 +153,6 @@
             <div id="discord"></div>
         </div>
     </div>
-
-    <video loop playsinline>
-        <source src="vid.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
 
     <script>
         const enterScreen = document.getElementById('enterScreen');
